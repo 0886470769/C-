@@ -1,4 +1,5 @@
 ﻿#include<iostream>
+#include<conio.h>
 using namespace std;
 
 //ho ten: le nam dai an
@@ -19,6 +20,7 @@ void CreateTree(TREE& t)
 }
 void AddNodetoTree(TREE& t, int x)
 {
+
 	if (t == NULL)
 	{
 		NODE* p = new NODE;
@@ -29,18 +31,19 @@ void AddNodetoTree(TREE& t, int x)
 	}
 	else
 	{
-		if (t->data > x)
+
+		if (x < t->data)
 		{
 			AddNodetoTree(t->pLeft, x);
 		}
-		else if (t->data < x)
+		else if (x > t->data)
 		{
 			AddNodetoTree(t->pRight, x);
 		}
 	}
 }
 
-void Browser_NLR(TREE& t)
+/* void Browser_NLR(TREE& t)
 {
 	if (t != NULL)
 	{
@@ -91,7 +94,54 @@ NODE* Search(TREE t, int x)
 		}
 	}
 
+}*
+// xuất các node có 2 con
+void Node_Co_2_Con(TREE t)
+{
+	if (t != NULL)
+	{
+		// xử lí
+		if (t->pLeft != NULL && t->pRight != NULL) // con trái và con phải có tồn tại phần tử
+		{
+			cout << t->data << "  ";
+		}
+		Node_Co_2_Con(t->pLeft); // duyệt sang cây con trái của node hiện tại
+		Node_Co_2_Con(t->pRight); // duyệt sang cây con phải của node hiện tại
+	}
 }
+bool Check_Prime_Numbers(int x)
+{
+	if (x < 2)
+	{
+		return false;
+	}
+	else
+	{
+		if (x == 2)
+		{
+			return true;
+		}
+		else
+		{
+			if (x % 2 == 0)
+			{
+				return false;
+			}
+			else
+			{
+				for (int i = 2; i < x; i++)
+				{
+					if (x % i == 0)
+					{
+						return false;
+					}
+				}
+			}
+		}
+	}
+	return true;
+}
+
 void DeleteNode(TREE& t, int data) 
 {
 	if (t == NULL)
@@ -122,19 +172,139 @@ void DeleteNode(TREE& t, int data)
 			delete X;
 		}
 	}
+}*/
+// tim tat ca cac node co trong cay nhi phan tim kiem...
+int AllNodeForTREE(TREE& t)
+{
+	if (t == NULL) return 0;
+	else return(AllNodeForTREE(t->pRight) + AllNodeForTREE(t->pLeft)) + 1;
+}
+
+// Tong chan trong cay nhi phan tim kiem...
+int SplitTatol(TREE& t)
+{
+	if (t != NULL)
+	{
+		int h = SplitTatol(t->pLeft);
+		int k = SplitTatol(t->pRight);
+		if (t->data % 2 == 0)
+		{
+			return  t->data + h + k;
+		}
+		else
+		{
+			return h + k;
+		}
+		return 0;
+	}
+
+}
+// Tong le trong cay nhi phan tim kiem...
+int RetailTotal(TREE& t)
+{
+	if (t != NULL)
+	{
+		int h = RetailTotal(t->pLeft);
+		int k = RetailTotal(t->pRight);
+		if (t->data % 2 != 0)
+		{
+			return t->data + h + k;
+		}
+		else
+		{
+			return h + k;
+		}
+		return 0;
+	}
+}
+// Kiem tra so nguyen to trong cay...
+bool CheckkPrimes(int x)
+{
+	if (x < 2)
+	{
+		return false;
+	}
+	else
+	{
+		if (x == 2)
+		{
+			return true;
+		}
+		else
+		{
+			if (x % 2 == 0)
+			{
+				return false;
+			}
+			else
+			{
+				for (int i = 2; i < x; i++)
+				{
+					if (x % i == 0)
+					{
+						return false;
+					}
+				}
+			}
+		}
+	}
+	return true;
+}
+// Dem so nguyen to co trong cay nhi phan ....
+void NumberCoutPrimes(TREE t, int& Number)
+{
+	if (t != NULL)
+	{
+		if (CheckkPrimes(t->data) == true)
+		{
+			Number++;
+		}
+		// Duyet cac node ben trai..
+		NumberCoutPrimes(t->pLeft, Number);
+		// Duyet cac node ben phai...
+		NumberCoutPrimes(t->pRight, Number);
+
+	}
+}
+// Tinh tong cac so nguyen to da tim kiem
+int SumNumberPrimes(TREE t, int& Sum)
+{
+
+	if (t != NULL)
+	{
+		int h = SumNumberPrimes(t->pLeft, Sum);
+		int k = SumNumberPrimes(t->pRight, Sum);
+		if (CheckkPrimes(t->data) == true)
+		{
+			return Sum = t->data + h + k;
+
+		}
+		else
+		{
+			return h + k;
+		}
+		return 0;
+	}
 }
 void Menu(TREE& t)
 {
 	while (true)
 	{
-		system("cls");
+		system("cls");		
 		cout << "\n\n\t\t ";
 		cout << "\n1. Insert information";
-		cout << "\n2\tNLR\n\t\t\t";
+		/*cout << "\n2\tNLR\n\t\t\t";
 		cout << "\n3\tLNR\n\t\t\t";
 		cout << "\n4\tLRN\n\t\t\t";
-		cout << "\n5\tSearch\n\t\t\t";
-		cout << "\n6\tDeleteNOPE\n\t\t\t";
+		cout << "\n5\tSearch\n\t\t\t";*/
+		cout << "\n6. Node co 2 con";
+		cout << "\n8. Dem so luong so nguyen to";
+		cout << "\n7\tDeleteNOPE\n\t\t\t";
+		cout << "\n9\ The number of molecules present in the binary tree is :";
+		cout << "\n11\Sum of odd numbers in leaf trees :";
+		cout << "\n12\The number of primes is :";
+		cout << "\n13\tThe sum of prime numbers is: ";
+
 		cout << "\n0. Finish";
 		cout << "\n\n\t\t ";
 
@@ -154,7 +324,7 @@ void Menu(TREE& t)
 			cin >> x;
 			AddNodetoTree(t, x);
 		}
-		else if (makechoice == 2)
+		/*else if (makechoice == 2)
 		{
 			cout << "\n\t\t Browser_NLR\n";
 			Browser_NLR(t);
@@ -187,14 +357,40 @@ void Menu(TREE& t)
 				cout << "\nMolecules" << x << " exists in the tree";
 			}
 			system("pause");
+		}*/
+		else if (makechoice == 9) {
+			cout << "\n\t\t\t The number of molecules present in the binary tree is :" 
+				<< AllNodeForTREE(t) << endl;
+			cout << "\n\t\t\t Node co hai con la:";
+			system("pause");
 		}
-		else if (makechoice == 6)
+
+		else if (makechoice == 11) {
+			cout << "\n\t\t\t Sum of odd numbers in leaf trees:"
+				<< RetailTotal(t);
+			RetailTotal(t);
+		}
+		else if (makechoice == 12) {
+			int Number = 0;
+			NumberCoutPrimes(t, Number);
+			cout << "\n\t\t\t The number of primes is :" << Number;
+			system("pause");
+		}
+		else if (makechoice == 13) {
+			int Sum = 0;
+			SumNumberPrimes(t, Sum);
+			cout << "\n\t\t\t The sum of prime numbers is: " << Sum;
+			system("pause");
+		}
+		/*else if (makechoice == 7)
 		{
 			int x;
 			cout << "\nEnter the value to delete: ";
 			cin >> x;
 			DeleteNode(t, x);
 		}
+		else if (makechoice == 7) {
+		}*/
 		else
 		{
 			break;
@@ -208,7 +404,6 @@ int main()
 	TREE t;
 	CreateTree(t);
 	Menu(t);
-
 	system("pause");
 	return 0;
 }
